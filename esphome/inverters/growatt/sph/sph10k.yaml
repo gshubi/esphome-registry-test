@@ -1,0 +1,151 @@
+# ============================================================================
+# SPH10K Register Package - For GitHub Include Test
+# ============================================================================
+# Include via:
+#   packages:
+#     registers: !include
+#       file: github://gshubi/esphome-registry-test/esphome/inverters/growatt/sph/sph10k.yaml@main
+#
+# Required substitutions in parent config:
+#   sensor_prefix: "sph10k_haus_01"  (or similar)
+# ============================================================================
+
+sensor:
+  # PV Production
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV1 Voltage"
+    id: ${sensor_prefix}_pv1_voltage
+    register_type: read
+    address: 3001
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV1 Power"
+    id: ${sensor_prefix}_pv1_power
+    register_type: read
+    address: 3003
+    value_type: U_DWORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV2 Voltage"
+    id: ${sensor_prefix}_pv2_voltage
+    register_type: read
+    address: 3005
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV2 Power"
+    id: ${sensor_prefix}_pv2_power
+    register_type: read
+    address: 3007
+    value_type: U_DWORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+
+  # Battery
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Battery SOC"
+    id: ${sensor_prefix}_battery_soc
+    register_type: read
+    address: 1014
+    value_type: U_WORD
+    unit_of_measurement: "%"
+    device_class: battery
+    state_class: measurement
+    accuracy_decimals: 0
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Battery Voltage"
+    id: ${sensor_prefix}_battery_voltage
+    register_type: read
+    address: 1013
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Battery Power"
+    id: ${sensor_prefix}_battery_power
+    register_type: read
+    address: 1011
+    value_type: U_DWORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  # Grid
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Grid Power"
+    id: ${sensor_prefix}_grid_power
+    register_type: read
+    address: 1021
+    value_type: S_DWORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  # Inverter Output
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Inverter Power"
+    id: ${sensor_prefix}_inverter_power
+    register_type: read
+    address: 3023
+    value_type: U_DWORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+number:
+  # APR Control (Active Power Rate)
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Active Power Rate"
+    id: ${sensor_prefix}_active_power_rate
+    register_type: holding
+    address: 3
+    value_type: U_WORD
+    unit_of_measurement: "%"
+    min_value: 0
+    max_value: 100
+    step: 1
+    mode: slider

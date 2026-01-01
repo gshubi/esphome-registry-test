@@ -1,17 +1,31 @@
 # ============================================================================
-# SPH10K Register Package - For GitHub Include Test
+# Growatt SPH10K-TL3-BH-UP Register Package
 # ============================================================================
-# Include via:
+# PVAutonomy Inverter Registry - Customer-Safe Version
+# 
+# Include in your ESPHome config:
 #   packages:
-#     registers: !include
-#       file: github://gshubi/esphome-registry-test/esphome/inverters/growatt/sph/sph10k.yaml@main
+#     inverter:
+#       url: https://github.com/gshubi/esphome-registry-test
+#       file: esphome/inverters/growatt/sph/sph10k.yaml
+#       ref: main
 #
-# Required substitutions in parent config:
-#   sensor_prefix: "sph10k_haus_01"  (or similar)
+# Required substitutions:
+#   sensor_prefix: "sph10k_haus_01"  (format: {series}_{location}_{number})
+#
+# Requirements:
+#   - VPP Mode must be enabled on inverter (via ShinePhone app)
+#   - Modbus Controller ID: inverter_modbus (defined in parent config)
+#
+# Last Updated: 2026-01-01
+# Verification: Hardware-tested on production system
 # ============================================================================
 
 sensor:
-  # PV Production
+  # ═══════════════════════════════════════════════════════════════════════════
+  # PV PRODUCTION
+  # ═══════════════════════════════════════════════════════════════════════════
+  
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
     name: "${sensor_prefix} PV1 Voltage"
@@ -25,7 +39,21 @@ sensor:
     accuracy_decimals: 1
     filters:
       - multiply: 0.1
-    
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV1 Current"
+    id: ${sensor_prefix}_pv1_current
+    register_type: read
+    address: 3002
+    value_type: U_WORD
+    unit_of_measurement: "A"
+    device_class: current
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
     name: "${sensor_prefix} PV1 Power"
@@ -54,6 +82,20 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV2 Current"
+    id: ${sensor_prefix}_pv2_current
+    register_type: read
+    address: 3006
+    value_type: U_WORD
+    unit_of_measurement: "A"
+    device_class: current
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
     name: "${sensor_prefix} PV2 Power"
     id: ${sensor_prefix}_pv2_power
     register_type: read
@@ -64,25 +106,29 @@ sensor:
     state_class: measurement
     accuracy_decimals: 0
 
-  # Battery
+  # ═══════════════════════════════════════════════════════════════════════════
+  # BATTERY STATUS
+  # ═══════════════════════════════════════════════════════════════════════════
+
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
     name: "${sensor_prefix} Battery SOC"
     id: ${sensor_prefix}_battery_soc
     register_type: read
-    address: 1014
+    address: 3035
     value_type: U_WORD
     unit_of_measurement: "%"
     device_class: battery
     state_class: measurement
     accuracy_decimals: 0
+    icon: "mdi:battery"
 
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
     name: "${sensor_prefix} Battery Voltage"
     id: ${sensor_prefix}_battery_voltage
     register_type: read
-    address: 1013
+    address: 3033
     value_type: U_WORD
     unit_of_measurement: "V"
     device_class: voltage
@@ -93,50 +139,198 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
-    name: "${sensor_prefix} Battery Power"
-    id: ${sensor_prefix}_battery_power
+    name: "${sensor_prefix} Battery Current"
+    id: ${sensor_prefix}_battery_current
     register_type: read
-    address: 1011
-    value_type: U_DWORD
-    unit_of_measurement: "W"
-    device_class: power
+    address: 3034
+    value_type: S_WORD
+    unit_of_measurement: "A"
+    device_class: current
     state_class: measurement
     accuracy_decimals: 1
     filters:
       - multiply: 0.1
 
-  # Grid
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Battery Power"
+    id: ${sensor_prefix}_battery_power
+    register_type: read
+    address: 3036
+    value_type: S_DWORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+    # Positive = charging, Negative = discharging
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Battery Temperature"
+    id: ${sensor_prefix}_battery_temperature
+    register_type: read
+    address: 3038
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # GRID STATUS
+  # ═══════════════════════════════════════════════════════════════════════════
+
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
     name: "${sensor_prefix} Grid Power"
     id: ${sensor_prefix}_grid_power
     register_type: read
-    address: 1021
+    address: 3016
     value_type: S_DWORD
     unit_of_measurement: "W"
     device_class: power
     state_class: measurement
-    accuracy_decimals: 1
-    filters:
-      - multiply: 0.1
+    accuracy_decimals: 0
+    # Positive = feed-in, Negative = consumption
 
-  # Inverter Output
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
-    name: "${sensor_prefix} Inverter Power"
-    id: ${sensor_prefix}_inverter_power
+    name: "${sensor_prefix} Grid Frequency"
+    id: ${sensor_prefix}_grid_frequency
     register_type: read
-    address: 3023
-    value_type: U_DWORD
-    unit_of_measurement: "W"
-    device_class: power
+    address: 3018
+    value_type: U_WORD
+    unit_of_measurement: "Hz"
+    device_class: frequency
+    state_class: measurement
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Grid Voltage L1"
+    id: ${sensor_prefix}_grid_voltage_l1
+    register_type: read
+    address: 3010
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
     state_class: measurement
     accuracy_decimals: 1
     filters:
       - multiply: 0.1
 
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Grid Voltage L2"
+    id: ${sensor_prefix}_grid_voltage_l2
+    register_type: read
+    address: 3011
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Grid Voltage L3"
+    id: ${sensor_prefix}_grid_voltage_l3
+    register_type: read
+    address: 3012
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # LOAD / HOUSE CONSUMPTION
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Load Power"
+    id: ${sensor_prefix}_load_power
+    register_type: read
+    address: 3020
+    value_type: U_DWORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # SYSTEM INFO & DIAGNOSTICS
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Inverter Status"
+    id: ${sensor_prefix}_inverter_status
+    register_type: read
+    address: 3000
+    value_type: U_WORD
+    accuracy_decimals: 0
+    # 0 = standby, 1 = running, 3 = fault
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} Inverter Temperature"
+    id: ${sensor_prefix}_inverter_temperature
+    register_type: read
+    address: 3039
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV Generation Today"
+    id: ${sensor_prefix}_pv_generation_today
+    register_type: read
+    address: 3044
+    value_type: U_DWORD
+    unit_of_measurement: "kWh"
+    device_class: energy
+    state_class: total_increasing
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+  - platform: modbus_controller
+    modbus_controller_id: inverter_modbus
+    name: "${sensor_prefix} PV Generation Total"
+    id: ${sensor_prefix}_pv_generation_total
+    register_type: read
+    address: 3046
+    value_type: U_DWORD
+    unit_of_measurement: "kWh"
+    device_class: energy
+    state_class: total_increasing
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+# ═══════════════════════════════════════════════════════════════════════════
+# APR CONTROL (Advanced Power Regulation)
+# ═══════════════════════════════════════════════════════════════════════════
+# This is the ONLY writable register - safe to use
+# Limits PV output percentage (5-100%)
+# VPP mode must be enabled on inverter
+
 number:
-  # APR Control (Active Power Rate)
   - platform: modbus_controller
     modbus_controller_id: inverter_modbus
     name: "${sensor_prefix} Active Power Rate"
@@ -145,7 +339,24 @@ number:
     address: 3
     value_type: U_WORD
     unit_of_measurement: "%"
-    min_value: 0
+    min_value: 5
     max_value: 100
     step: 1
     mode: slider
+    icon: "mdi:solar-power"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# TEXT SENSORS (Status Mapping)
+# ═══════════════════════════════════════════════════════════════════════════
+
+text_sensor:
+  - platform: template
+    name: "${sensor_prefix} Inverter Status Text"
+    id: ${sensor_prefix}_inverter_status_text
+    lambda: |-
+      int status = id(${sensor_prefix}_inverter_status).state;
+      if (status == 0) return {"Standby"};
+      if (status == 1) return {"Running"};
+      if (status == 3) return {"Fault"};
+      return {"Unknown"};
+    update_interval: 10s

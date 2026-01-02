@@ -18,9 +18,10 @@
 #   - VPP Mode must be enabled on inverter (via ShinePhone app)
 #   - Battery Operation Mode: "Normal unrestricted" (0)
 #
-# Last Updated: 2026-01-01
+# Last Updated: 2026-01-02
 # Verification: Hardware-tested on production SPH10K system
 # Source: Core 2 sph10k_sensors.yaml (verified working)
+# Naming: Per 03_naming_convention.md - Display names without device prefix
 # ============================================================================
 
 sensor:
@@ -30,7 +31,7 @@ sensor:
   
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} PV1 Power"
+    name: "PV1 Power"
     id: ${sensor_prefix}_pv1_power
     address: 5
     register_type: read
@@ -49,7 +50,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} PV2 Power"
+    name: "PV2 Power"
     id: ${sensor_prefix}_pv2_power
     address: 9
     register_type: read
@@ -68,7 +69,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} PV1 Energy Today"
+    name: "PV1 Energy Today"
     id: ${sensor_prefix}_pv1_energy_today
     address: 59
     register_type: read
@@ -83,7 +84,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} PV1 Energy Total"
+    name: "PV1 Energy Total"
     id: ${sensor_prefix}_pv1_energy_total
     address: 61
     register_type: read
@@ -98,7 +99,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} PV2 Energy Today"
+    name: "PV2 Energy Today"
     id: ${sensor_prefix}_pv2_energy_today
     address: 63
     register_type: read
@@ -113,7 +114,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} PV2 Energy Total"
+    name: "PV2 Energy Total"
     id: ${sensor_prefix}_pv2_energy_total
     address: 65
     register_type: read
@@ -132,7 +133,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Inverter Temperature"
+    name: "Inverter Temperature"
     id: ${sensor_prefix}_inverter_temperature
     address: 93
     register_type: read
@@ -151,7 +152,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Inverter Status"
+    name: "Inverter Status"
     id: ${sensor_prefix}_inverter_status
     address: 1000
     register_type: read
@@ -166,7 +167,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Battery Discharging Power"
+    name: "Battery Discharging Power"
     id: ${sensor_prefix}_battery_discharging_power
     address: 1009
     register_type: read
@@ -181,7 +182,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Battery Charging Power"
+    name: "Battery Charging Power"
     id: ${sensor_prefix}_battery_charging_power
     address: 1011
     register_type: read
@@ -196,7 +197,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Battery Voltage"
+    name: "Battery Voltage"
     id: ${sensor_prefix}_battery_voltage
     address: 1013
     register_type: read
@@ -211,7 +212,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Battery SOC"
+    name: "Battery SOC"
     id: ${sensor_prefix}_battery_soc
     address: 1014
     register_type: read
@@ -224,7 +225,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Battery Temperature"
+    name: "Battery Temperature"
     id: ${sensor_prefix}_battery_temperature
     address: 1040
     register_type: read
@@ -239,7 +240,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Battery Current"
+    name: "Battery Current"
     id: ${sensor_prefix}_battery_current
     address: 1088
     register_type: read
@@ -255,7 +256,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} BMS Status"
+    name: "BMS Status"
     id: ${sensor_prefix}_bms_status
     address: 1103
     register_type: read
@@ -270,7 +271,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Grid Power"
+    name: "Grid Power"
     id: ${sensor_prefix}_grid_power
     address: 1021
     register_type: read
@@ -285,7 +286,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Local Load Power"
+    name: "Local Load Power"
     id: ${sensor_prefix}_local_load_power
     address: 1037
     register_type: read
@@ -304,7 +305,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} AC Output Power"
+    name: "AC Output Power"
     id: ${sensor_prefix}_ac_output_power
     address: 1029
     register_type: read
@@ -323,7 +324,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Energy From Grid Total"
+    name: "Energy From Grid Total"
     id: ${sensor_prefix}_energy_from_grid_total
     address: 1046
     register_type: read
@@ -338,7 +339,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Energy To Grid Today"
+    name: "Energy To Grid Today"
     id: ${sensor_prefix}_energy_to_grid_today
     address: 1052
     register_type: read
@@ -353,7 +354,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Total Load Energy"
+    name: "Total Load Energy"
     id: ${sensor_prefix}_total_load_energy
     address: 1056
     register_type: read
@@ -368,7 +369,7 @@ sensor:
 
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Today Load Energy"
+    name: "Today Load Energy"
     id: ${sensor_prefix}_today_load_energy
     address: 1058
     register_type: read
@@ -388,7 +389,7 @@ sensor:
 number:
   - platform: modbus_controller
     modbus_controller_id: ${modbus_controller_id}
-    name: "${sensor_prefix} Active Power Rate"
+    name: "Active Power Rate"
     id: ${sensor_prefix}_active_power_rate
     address: 3
     register_type: holding
